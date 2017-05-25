@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="components/jquery/dist/jquery.js"></script>
+    <script src="SmashGGDashboard.js"></script>
+    <link rel="stylesheet" href="SmashGGDashboard.css">
+    <script src="components/jquery-ui/jquery-ui.js"></script>
+    <link rel="stylesheet" href="components/jquery-ui/themes/redmond/jquery-ui.css"/>
+</head>
+<body>
+<div id="smashgg-dashboard">
+	<select id="smashggTournamentSelector" placeholder="Tournament">
+		<option selected="selected" disabled="disabled">Tournament</option>
+	</select>
+	<input type="text" id="smashggTournamentName" placeholder="Tournament Name Here">
+	<button type="button" id="smashggUpdateButton">Fetch Tournament</button>
+</div>
+<div id="smashgg-events">
+	<hr>
+	<select id="smashggTournamentEvents" placeholder="Choose Event">
+        <option selected="selected" disabled="disabled">Event</option>
+    </select>
+    <button type="button" id="smashggEventButton">Get Event Info</button>
+</div>
+<div id="smashgg-phases">
+    <hr>
+    <select id="smashggEventPhases" placeholder="Pools">
+        <option selected="selected" disabled="disabled">Phase</option>
+    </select>
+    <select id="smashggPhaseGroups" placeholder="Group 1">
+        
+    </select>
+    <button type="button" id="smashggPhaseGroupButton">Get Details</button>
+</div>
+<div id="smashgg-group">
+	<hr />
+	<table id="smashggGroupPlayerInfo">
+		<tr>
+			<th>Match</th>
+			<th>P1</th>
+			<th>P2</th>
+            <th>C</th>
+		</tr>
+	</table>
+</div>
+<!--
+<div id="smashgg-phasegroup">
+    <hr>
+    
+</div>-->
+<hr>
+<div id="operationResult"> </div>
+</body>
+</html>
+
