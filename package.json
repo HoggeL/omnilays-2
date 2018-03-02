@@ -6,7 +6,7 @@
   "description": "NodeCG Overlay engine for Fighting games",
   "license": "MIT",
   "nodecg": {
-    "compatibleRange": "~0.8.0",
+    "compatibleRange": "0.9.9",
     "graphics": [
       {
         "file": "MatchScreen.html",

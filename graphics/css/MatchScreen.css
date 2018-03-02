@@ -34,7 +34,7 @@ body {
 }
 
 #player1 {
-    background-image: url('/graphics/nodecg-omnilays/img/PanelBg.png');
+    background-image: url('../img/PanelBg.png');
     width: 300px;
     height: 45px;
     float: left;
@@ -51,7 +51,7 @@ body {
 }
 
 #player2 {
-    background-image: url('/graphics/nodecg-omnilays/img/PanelBgP2.png');
+    background-image: url('../img/PanelBgP2.png');
     width: 300px;
     height: 45px;
     float: left;
@@ -131,7 +131,7 @@ body {
     left: 0px;
     width: 150px;
     height: 60px;
-    background-image: url('/graphics/nodecg-omnilays/img/Wins.png');
+    background-image: url('../img/Wins.png');
 }
 
 #losesPicture {
@@ -140,11 +140,11 @@ body {
     left: 0px;
     width: 150px;
     height: 60px;
-    background-image: url('/graphics/nodecg-omnilays/img/Loses.png');
+    background-image: url('../img/Loses.png');
 }
 
 div.XrdLogo {
-    background-image: url('/graphics/nodecg-omnilays/img/ggse.png');
+    background-image: url('../img/ggse.png');
     min-width: 160px;
     min-height: 160px;
     position: fixed;

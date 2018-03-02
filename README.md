@@ -63,5 +63,5 @@ This screen shows information about player names, characters and what type of ma
 OMNILays is provided under the MIT license
 
 ### Contributors
-* [Håkan "Hogge" Levin]
+* [Håkan "Hogge" Levin](http://hoggel.github.io)
 * [Tobias "Charleon" Nerg](http://twitch.tv/sethcharleon)
