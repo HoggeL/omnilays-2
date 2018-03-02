@@ -52,17 +52,26 @@ $(function () {
 	nodecg.listenFor('smashgg-sendplayerdata', function(value, callback) {
                 // Avoid adding players if user hasn't yet typed in anything
         var p1 = value.p1;
-        var p2 = value.p2;
+		var p2 = value.p2;
 
-        var playerContainer = playerPersistantDataReplicant.value;
+		console.log("playerpaneldash");
+		console.log(p1, p2);
+
+		var playerContainer = playerPersistantDataReplicant.value;
+
+		console.log(playerPersistantDataReplicant.value);
+
         if (typeof playerContainer === 'undefined' || playerContainer =="") {
             playerContainer = createPlayerContainer();
-        }
+		}
 
-        var player1Data = {'sNickName': p1.gamerTag, 'sFlag': 'XX', 'nScore': 0};
-        var player2Data = {'sNickName': p2.gamerTag, 'sFlag': 'XX', 'nScore': 0 };
+		console.log("1");
+		console.log(playerContainer);
 
-		console.log(player1Data, player2Data);
+        var player1Data = {'sNickName': p1.gamerTag, 'sFlag': 'SE', 'nScore': 0};
+        var player2Data = {'sNickName': p2.gamerTag, 'sFlag': 'SE', 'nScore': 0};
+
+		
 		
         var foundPlayer1 = false;
         var foundPlayer2 = false;
@@ -80,21 +89,21 @@ $(function () {
                     foundPlayer2 = true;
                 }
             }
-        }
-
+		}
+		
         if (!foundPlayer1) {
             playerContainer['players'].push(player1Data);
         }
         if (!foundPlayer2) {
             playerContainer['players'].push(player2Data);
-        }
-
-        console.log(player1Data, player2Data);
+		}
+		
         $p1DropDownMenu.val(player1Data.sNickName);
         $p2DropDownMenu.val(player2Data.sNickName);
 
         $p1DropDownMenu.selectmenu("refresh");
-        $p2DropDownMenu.selectmenu("refresh");
+		$p2DropDownMenu.selectmenu("refresh");
+
 
         // Store the array with the added new player
         playerPersistantDataReplicant.value = playerContainer;
@@ -108,12 +117,12 @@ $(function () {
         // When we boot up the dashboard, update dropdowns with loaded values
         console.log(newValue);
         if (typeof newValue !== 'undefined' && newValue != '') {
-            updatePlayerDropDowns(newValue);
+			updatePlayerDropDowns(newValue);
             return;
         }
-        else if (typeof oldValue === 'undefined' || typeof newValue === 'undefined') {
+		else if (typeof oldValue === 'undefined' || typeof newValue === 'undefined') {
             return;
-        }
+		}
 
         // We trigger this onChange when a playerscore gets updated,
         // however we don't care about it here. We can distinguish if there
@@ -123,7 +132,7 @@ $(function () {
         }
         else {
             updatePlayerDropDowns(newValue);
-            newValue.updateFlag = false;
+			newValue.updateFlag = false;
         }
     });
 
@@ -144,12 +153,12 @@ $(function () {
         updateMatchStats();
     });
 
-    $playerOnePlusScoreButton.click(function() {
+	$playerOnePlusScoreButton.click(function () {
         var p1ScoreVariable = Number($('#xrd-p1Score').val());
         p1ScoreVariable++;
-        $('#xrd-p1Score').val(p1ScoreVariable);
+		$('#xrd-p1Score').val(p1ScoreVariable);
 
-        updateMatchStats();
+		updateMatchStats();
     });
 
     $playerTwoPlusScoreButton.click(function() {
@@ -160,14 +169,20 @@ $(function () {
        updateMatchStats();
     });
 
-    function updateMatchStats() {
+	function updateMatchStats() {
+
         // Do not indicate an update to the view if both players have the same value or have the standard values
         if ($p1DropDownMenu.find("option:selected").text() == $p2DropDownMenu.find("option:selected").text() ||
             $p1DropDownMenu.find("option:selected").text() == "Player 1" ||
             $p2DropDownMenu.find("option:selected").text() == "Player 2") {
             setOperationResult("Won't update players with identical names or default value", false);
-            return;
+			return;
+
+			//TODO
         }
+
+		console.log("match stats");
+		console.log($p2DropDownMenu.val());
 
         var viewUpdateData = getPlayerData($("#p1NickName-dropdown option:selected").text(), $("#p2NickName-dropdown option:selected").text());
         var matchStyle = $('input[name=matchstyle]:checked').val();
@@ -176,7 +191,10 @@ $(function () {
         viewUpdateData.matchStyle = matchStyle;
 
         // When we set this replicant value, the view will get notified
-        matchScreenPlayerUpdateDataReplicant.value = viewUpdateData;
+		matchScreenPlayerUpdateDataReplicant.value = viewUpdateData;
+
+		$p1DropDownMenu.selectmenu("refresh");
+		$p2DropDownMenu.selectmenu("refresh");
 
         setOperationResult('Update sent to view', true);
     }
@@ -197,7 +215,11 @@ $(function () {
         $p1DropDownMenu.val(p2Val);
         $p2DropDownMenu.val(p1Val);
         $('#xrd-p1Score').val(p2Score);
-        $('#xrd-p2Score').val(p1Score);
+		$('#xrd-p2Score').val(p1Score);
+
+
+		$p1DropDownMenu.selectmenu("refresh");
+		$p2DropDownMenu.selectmenu("refresh");
 
         setOperationResult('Successfully Swapped players', true);
     });
@@ -286,14 +308,16 @@ $(function () {
     $playersRemoveAllButton.click(function () {
         var isOk = confirm("ALL players will be removed from the dashboard and you will need to add new players manually");
         if (isOk) {
-            playerPersistantDataReplicant.value = createPlayerContainer();
+			playerPersistantDataReplicant.value = createPlayerContainer();
+			console.log("remove kebab");
+			console.log(playerPersistantDataReplicant.value);
         }
     });
 
     /* Controlling panel components ********************/
     /***************************************************/
     function updatePlayerDropDowns(playerArray) {
-
+		console.log("0");
         if(!playerArray || !playerArray.players || playerArray.players.length <= 0) {
             var listItems = "<option value='Player 1'>" + 'Player 1' + "</option>";
             $p1DropDownMenu.html(listItems);
@@ -307,7 +331,9 @@ $(function () {
 
             console.log("returning");
             return;
-        }
+		}
+
+		console.log("1");
 
         // First We need to save the textual value that was selected
         // so that we can set the correct value after we update the list.
@@ -318,22 +344,21 @@ $(function () {
 
         var p2SelectedNickName = $('#p2NickName-dropdown option:selected').text();
         var p2SelectedNickNameValue = $p2DropDownMenu.prop('selectedIndex');
-        var listItems = '';
-
+		var listItems = '';
+		
         // Create the <option> elements for the drop down list.
         for (var i = 0; i < playerArray.players.length; i++) {
             listItems += "<option value='" + playerArray.players[i].sNickName + "'>" + playerArray.players[i].sNickName + "</option>";
-        }
+		}
+		
 
         $p1DropDownMenu.html(listItems);
         $p2DropDownMenu.html(listItems);
         $removeDropDownMenu.html(listItems);
         $changeDropDownMenu.html(listItems);
-
-        $p1DropDownMenu.selectmenu("refresh");
-        $p2DropDownMenu.selectmenu("refresh");
+		
         $removeDropDownMenu.selectmenu("refresh");
-        $changeDropDownMenu.selectmenu("refresh");
+		$changeDropDownMenu.selectmenu("refresh");
 
         var playerData = findPlayerName(p1SelectedNickName);
 
@@ -351,7 +376,11 @@ $(function () {
         }
         else {
             $p2DropDownMenu.find("option").eq(p2SelectedNickNameValue).prop('selected', true);
-        }
+		}
+		
+		$p1DropDownMenu.selectmenu("refresh");
+		$p2DropDownMenu.selectmenu("refresh");
+		
     }
 
     /* Read and set player data ************************/
