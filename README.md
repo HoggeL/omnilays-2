@@ -20,19 +20,19 @@ There are two prerequisites to get OMNILays working.
 
 Then:
 # Will be revised
-~~1. download and install [nodecg](http://nodecg.com/) version 7.0 or later. here comes a short summary: 
-Make a new folder, in that folder, rightclick, choose "Open Git Bash.." and in the prompt, type:
-   * npm install nodecg-cli -g 
-   * mkdir nodecg && cd nodecg 
-   * nodecg setup
-   * npm install
-   * npm install bower -g
-   * bower install
-   * nodecg install HoggeL/omnilays-2
-6. In the prompt, under the nodecg root type ‘nodecg start’ and keep the prompt open for as long as you use the overlay
-7. The above step set up a local server on your computer so you can now test it out! either in your browser (Chrome is the only one that gives the CORRECT result), or in xSplit or OBS
-For OBS you need the [CLR Browser Plugin](https://obsproject.com/forum/resources/clr-browser-source-plugin.22/), but the latest xSplit version already has support to add web url:s using the "Add page URL.." option
-~~
+~~1. download and install [nodecg](http://nodecg.com/) version 7.0 or later. here comes a short summary: ~~
+~~Make a new folder, in that folder, rightclick, choose "Open Git Bash.." and in the prompt, type:~~
+   * ~~npm install nodecg-cli -g ~~
+   * ~~mkdir nodecg && cd nodecg ~~
+   * ~~nodecg setup~~
+   * ~~~~npm install~~
+   * ~~npm install bower -g~~
+   * ~~bower install~~
+   * ~~nodecg install HoggeL/omnilays-2~~
+~~6. In the prompt, under the nodecg root type ‘nodecg start’ and keep the prompt open for as long as you use the overlay~~
+~~7. The above step set up a local server on your computer so you can now test it out! either in your browser (Chrome is the only one that gives the CORRECT result), or in xSplit or OBS~~
+~~For OBS you need the [CLR Browser Plugin](https://obsproject.com/forum/resources/clr-browser-source-plugin.22/), but the latest xSplit version already has support to add web url:s using the "Add page URL.." option~~
+
 ### Usage
 Open **http://localhost:9090/dashboard/#** to see the dashboard. From here you control the rest of the overlay. You should do this from your browser.
 ##### http://localhost:9090/graphics/nodecg-omnilays
