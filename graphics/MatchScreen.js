@@ -29,13 +29,19 @@ $(function() {
     var matchScreenPlayerUpdateDataReplicant = nodecg.Replicant("matchScreenPlayerUpdateData");
     matchScreenPlayerUpdateDataReplicant.on("change", function (newValue, oldValue) {
         // Don't do anything if we don't have any data to work with.
+        console.log("update");
+
         if(typeof newValue === 'undefined') {
             return;
         }
+
+        console.log("1");
         // We have set it to true ourselves to signify that we have handled the data
         if(newValue === true) {
             return;
         }
+
+        console.log("2");
 
         //View has received the update and applied the desired action
         updatePlayers(newValue);
