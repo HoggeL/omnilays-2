@@ -54,24 +54,14 @@ $(function () {
         var p1 = value.p1;
 		var p2 = value.p2;
 
-		console.log("playerpaneldash");
-		console.log(p1, p2);
-
 		var playerContainer = playerPersistantDataReplicant.value;
-
-		console.log(playerPersistantDataReplicant.value);
 
         if (typeof playerContainer === 'undefined' || playerContainer =="") {
             playerContainer = createPlayerContainer();
 		}
 
-		console.log("1");
-		console.log(playerContainer);
-
-        var player1Data = {'sNickName': p1.gamerTag, 'sFlag': 'SE', 'nScore': 0};
-        var player2Data = {'sNickName': p2.gamerTag, 'sFlag': 'SE', 'nScore': 0};
-
-		
+        var player1Data = {'sNickName': p1.gamerTag, 'sFlag': p1.sFlag, 'nScore': 0};
+        var player2Data = {'sNickName': p2.gamerTag, 'sFlag': p1.sFlag, 'nScore': 0};
 		
         var foundPlayer1 = false;
         var foundPlayer2 = false;
@@ -82,7 +72,6 @@ $(function () {
                     //If we found player, update his flag instead, keep score intact, it might be in use!
                     playerContainer.players[i].sFlag = player1Data.sFlag;
                     foundPlayer1 = true;
-                    break;
                 }
                 if (playerContainer.players[i].sNickName == player2Data.sNickName) {
                     playerContainer.players[i].sFlag = player2Data.sFlag;
@@ -96,14 +85,15 @@ $(function () {
         }
         if (!foundPlayer2) {
             playerContainer['players'].push(player2Data);
-		}
-		
+        }
+
+        addPlayersToHTML([ player1Data.sNickname, player2Data.sNickName ]);
+
         $p1DropDownMenu.val(player1Data.sNickName);
         $p2DropDownMenu.val(player2Data.sNickName);
-
+        
         $p1DropDownMenu.selectmenu("refresh");
-		$p2DropDownMenu.selectmenu("refresh");
-
+        $p2DropDownMenu.selectmenu("refresh");
 
         // Store the array with the added new player
         playerPersistantDataReplicant.value = playerContainer;
@@ -111,28 +101,47 @@ $(function () {
 
     });
 
+
+
 // Initialize replicants we will use
     var playerPersistantDataReplicant = nodecg.Replicant("playerPersistantData");
-    playerPersistantDataReplicant.on("change", function (newValue, oldValue) {
+    playerPersistantDataReplicant.on("change", function (newValue, oldValue, operations) {
         // When we boot up the dashboard, update dropdowns with loaded values
-        console.log(newValue);
-        if (typeof newValue !== 'undefined' && newValue != '') {
-			updatePlayerDropDowns(newValue);
-            return;
-        }
-		else if (typeof oldValue === 'undefined' || typeof newValue === 'undefined') {
-            return;
-		}
+        // if (typeof operations !== 'undefined') {
+        //     var playerNicks = [];
 
-        // We trigger this onChange when a playerscore gets updated,
-        // however we don't care about it here. We can distinguish if there
-        // has been a meaningful change by comparing the length of the playerdata.
-        if ((oldValue.players.length == newValue.players.length) && newValue.updateFlag == false) {
+        //     for(var i = 0; i < operations.length; i++)
+        //     {
+        //         playerNicks[playerNicks.length] = operations[i].args[0].sNickName;
+        //     }
+        // }
 
-        }
-        else {
-            updatePlayerDropDowns(newValue);
-			newValue.updateFlag = false;
+        // if (typeof newValue !== 'undefined' && newValue != '') {
+		// 	updatePlayerDropDowns(newValue, playerNicks);
+
+        //     return;
+        // }
+		// else if (typeof oldValue === 'undefined' || typeof newValue === 'undefined') {
+        //     return;
+		// }
+
+        // // We trigger this onChange when a playerscore gets updated,
+        // // however we don't care about it here. We can distinguish if there
+        // // has been a meaningful change by comparing the length of the playerdata.
+
+        // console.log("hej?");
+
+        // if ((oldValue.players.length == newValue.players.length) && newValue.updateFlag == false) {
+
+        // }
+        // else {
+        //     updatePlayerDropDowns(newValue);
+		// 	newValue.updateFlag = false;
+        // }
+        if(typeof oldValue === 'undefined')
+        {
+            console.log("hej?");
+            initPlayerDropDowns(newValue);
         }
     });
 
@@ -180,10 +189,6 @@ $(function () {
 
 			//TODO
         }
-
-		console.log("match stats");
-		console.log($p2DropDownMenu.val());
-
         var viewUpdateData = getPlayerData($("#p1NickName-dropdown option:selected").text(), $("#p2NickName-dropdown option:selected").text());
         var matchStyle = $('input[name=matchstyle]:checked').val();
         viewUpdateData.players[0].nScore = $('#xrd-p1Score').val();
@@ -257,9 +262,10 @@ $(function () {
         // Reset name field to avoid several accidental pushes.
         $('#playerNickName').val('');
 
+        addPlayersToHTML([ playerData.sNickName ]);
+
         // Store the array with the added new player
         playerPersistantDataReplicant.value = playerContainer;
-        console.log(playerPersistantDataReplicant); 
         setOperationResult('Successfully added player ' + playerData.sNickName, true);
 
     });
@@ -309,16 +315,31 @@ $(function () {
         var isOk = confirm("ALL players will be removed from the dashboard and you will need to add new players manually");
         if (isOk) {
 			playerPersistantDataReplicant.value = createPlayerContainer();
-			console.log("remove kebab");
-			console.log(playerPersistantDataReplicant.value);
         }
     });
 
     /* Controlling panel components ********************/
     /***************************************************/
-    function updatePlayerDropDowns(playerArray) {
-		console.log("0");
+    function addPlayersToHTML(playerArray) {
+        var listItems = '';
+        var playerArray123 = playerPersistantDataReplicant.value;
+
+        for (var i = 0; i < playerArray123.players.length; i++) {
+            listItems += "<option value='" + playerArray123.players[i].sNickName + "'>" + playerArray123.players[i].sNickName + "</option>";
+        }
+        
+        for (var i = 0; i < playerArray.length; i++)
+        {
+            listItems += "<option value='" + playerArray[i] + "'>" + playerArray[i] + "</option>";
+        }
+
+        $p1DropDownMenu.html(listItems);
+        $p2DropDownMenu.html(listItems);
+    }
+
+    function initPlayerDropDowns(playerArray) {
         if(!playerArray || !playerArray.players || playerArray.players.length <= 0) {
+            /*
             var listItems = "<option value='Player 1'>" + 'Player 1' + "</option>";
             $p1DropDownMenu.html(listItems);
             $p2DropDownMenu.html(listItems);
@@ -328,22 +349,19 @@ $(function () {
             $p2DropDownMenu.selectmenu("refresh");
             $removeDropDownMenu.selectmenu("refresh");
             $changeDropDownMenu.selectmenu("refresh");
-
-            console.log("returning");
+            */
             return;
 		}
-
-		console.log("1");
 
         // First We need to save the textual value that was selected
         // so that we can set the correct value after we update the list.
         // If we can't find the name in the resultinglist, at least try to set it
         // to the same value as before, there is a chance that the nickname got changed!
-        var p1SelectedNickName = $('#p1NickName-dropdown option:selected').text();
-        var p1SelectedNickNameValue = $p1DropDownMenu.prop('selectedIndex');
+        // var p1SelectedNickName = $('#p1NickName-dropdown option:selected').text();
+        // var p1SelectedNickNameValue = $p1DropDownMenu.prop('selectedIndex');
 
-        var p2SelectedNickName = $('#p2NickName-dropdown option:selected').text();
-        var p2SelectedNickNameValue = $p2DropDownMenu.prop('selectedIndex');
+        // var p2SelectedNickName = $('#p2NickName-dropdown option:selected').text();
+        // var p2SelectedNickNameValue = $p2DropDownMenu.prop('selectedIndex');
 		var listItems = '';
 		
         // Create the <option> elements for the drop down list.
@@ -358,25 +376,26 @@ $(function () {
         $changeDropDownMenu.html(listItems);
 		
         $removeDropDownMenu.selectmenu("refresh");
-		$changeDropDownMenu.selectmenu("refresh");
+        $changeDropDownMenu.selectmenu("refresh");
 
-        var playerData = findPlayerName(p1SelectedNickName);
+        // var playerData = findPlayerName(playerNicks[0]);
 
-        if (playerData != false) {
-            $p1DropDownMenu.val(p1SelectedNickName);
-        }
-        else {
-            $p1DropDownMenu.find("option").eq(p1SelectedNickNameValue).prop('selected', true);
-        }
+        // if (playerData != false) {
+        //     $p1DropDownMenu.val(p1SelectedNickName);
+        // }
+        // else {
+        //     $p1DropDownMenu.find("option").eq(p1SelectedNickNameValue).prop('selected', true);
+        // }
 
-        var playerData2 = findPlayerName(p2SelectedNickName);
 
-        if (playerData2 != false) {
-            $p2DropDownMenu.val(p2SelectedNickName);
-        }
-        else {
-            $p2DropDownMenu.find("option").eq(p2SelectedNickNameValue).prop('selected', true);
-		}
+        // var playerData2 = findPlayerName(p2SelectedNickName);
+
+        // if (playerData2 != false) {
+        //     $p2DropDownMenu.val(p2SelectedNickName);
+        // }
+        // else {
+        //     $p2DropDownMenu.find("option").eq(p2SelectedNickNameValue).prop('selected', true);
+		// }
 		
 		$p1DropDownMenu.selectmenu("refresh");
 		$p2DropDownMenu.selectmenu("refresh");

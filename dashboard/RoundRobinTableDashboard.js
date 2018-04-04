@@ -45,9 +45,6 @@ $(function () {
     var toggle = false;
     var roundRobinConfigurationContainer = '';
 
-		
-	console.log('1');
-
 	// Initialize replicants we will use
     var roundRobinConfiguration = nodecg.Replicant("roundRobinConfiguration");
     roundRobinConfiguration.on("change", function(newValue, oldValue){
@@ -71,8 +68,6 @@ $(function () {
             valuesLoaded = true;
         }
     });
-
-	console.log('2');
     var playerPersistantDataReplicant = nodecg.Replicant("playerPersistantData");
     playerPersistantDataReplicant.on("change", function (newValue, oldValue) {
         if(typeof newValue === 'undefined') {
